@@ -2,6 +2,9 @@ var playerCard1 = "";
 var playerCard2 = "";
 var computerCard1 = "";
 var computerCard2 = "";
+let dealButton = document.getElementById("submit-button");
+let hitButton = document.getElementById("submit-buttonHit");
+let standButton = document.getElementById("submit-buttonStand");
 
 var main = function (input) {
   var cardDeck = makeDeck();
@@ -31,35 +34,62 @@ var main = function (input) {
       gameState = "playerDraws";
       return (
         playerAndDealerHands +
-        `Both you and the dealer got a blackjack! <br><br><b>It's a draw!</b>`
+        `Both you and the dealer got a blackjack! <br><br><b>It's a draw! 🤔</b>`
       );
     } else if (playerCard1.rank + playerCard2.rank == 21) {
       gameState = "playerWins";
       return (
-        playerAndDealerHands + `You got a blackjack!<br><br> <b>You win!</b>`
+        playerAndDealerHands +
+        `You got a blackjack!<br><br> <b>You win! 🎉🎉</b>`
       );
     } else if (computerCard1.rank + computerCard2.rank == 21) {
       gameState = "playerLoses";
       return (
         playerAndDealerHands +
-        `The dealer got a blackjack! <br><br> <b>You lose!</b>`
+        `The dealer got a blackjack! <br><br> <b>You lose! 💸</b>`
       );
     } else {
       gameState = "hitOrStand";
     }
-    if ((gameState = "hitOrStand")) {
+    // if ((gameState = "hitOrStand")) {
+    // }
+
+    gameState = "compareAfterStanding";
+    if ((gameState = "compareAfterStanding")) {
+      if (
+        playerCard1.rank + playerCard2.rank >
+        computerCard1.rank + computerCard2.rank
+      ) {
+        gameState = "playerWins";
+        return (
+          playerAndDealerHands +
+          `<br><br> <b>Your hand wins the dealer's! 🎉🎉 </b>`
+        );
+      } else if (
+        playerCard1.rank + playerCard2.rank ==
+        computerCard1.rank + computerCard2.rank
+      ) {
+        gameState = "playerDraws";
+        return (
+          playerAndDealerHands +
+          `<br><br> <b>You are tied with the dealer! 🤔</b>`
+        );
+      } else {
+        gameState = "playerLoses";
+        return playerAndDealerHands + `<br><br> <b>You lose! 💸</b>`;
+      }
     }
   }
-
-  //if no Blackjacks, player is prompted to 'hit' or 'stand'
-  //player can keep 'hitting' until ready or 'stand' or if hand exceeds 21, immediately show both player/dealer hands -> can only draw or lose
-  //computer will automatically 'hit' or 'stand' -> logic could be computer only 'stands' when hands is 18 and above
-  //when both 'stand', reveal cards and decide winner.
 };
+
+//if no Blackjacks, player is prompted to 'hit' or 'stand'
+//player can keep 'hitting' until ready or 'stand' or if hand exceeds 21, immediately show both player/dealer hands -> can only draw or lose
+//computer will automatically 'hit' or 'stand' -> logic could be computer only 'stands' when hands is 18 and above
+//when both 'stand', reveal cards and decide winner.;
 
 function makeDeck() {
   var cardDeck = []; //create 4 suits
-  var suits = ["diamonds", "clubs", "hearts", "spades"];
+  var suits = ["♦️", "♣️", "♥️", "♠️"];
   for (suitsIndex = 0; suitsIndex < suits.length; suitsIndex += 1) {
     var currentSuit = suits[suitsIndex];
     //loop through each suit & within each suit, loop through each rank
@@ -105,5 +135,5 @@ function random(size) {
 }
 
 function showCards() {
-  return (playerAndDealerHands = `You drew ${playerCard1.rank} & ${playerCard2.rank}.<br>The dealer drew ${computerCard1.rank} & ${computerCard2.rank}.<br><br>`);
+  return (playerAndDealerHands = `You drew ${playerCard1.rank} ${playerCard1.suit} & ${playerCard2.rank} ${playerCard2.suit}.<br>The dealer drew ${computerCard1.rank} ${computerCard1.suit} & ${computerCard2.rank} ${computerCard2.suit}.<br><br>`);
 }
