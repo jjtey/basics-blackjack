@@ -3,6 +3,8 @@ var computerCard = [];
 let dealButton = document.getElementById("submit-button");
 let hitButton = document.getElementById("submit-buttonHit");
 let standButton = document.getElementById("submit-buttonStand");
+var playerScore = "";
+var computerScore = "";
 
 var main = function (input) {
   var cardDeck = makeDeck();
@@ -10,62 +12,64 @@ var main = function (input) {
   var gameState = "drawCards";
   //if game state = xx, deal the cards -> which is each player/dealer draws 2 cards
   if ((gameState = "drawCards")) {
+    dealButton.style.display = "none";
+    hitButton.style.display = "inline";
+    standButton.style.display = "inline";
     playerCard.push(shuffledDeck.pop());
     computerCard.push(shuffledDeck.pop());
     playerCard.push(shuffledDeck.pop());
     computerCard.push(shuffledDeck.pop());
-    var playerScore = calculateScore(playerCard);
-    var computerScore = calculateScore(computerCard);
+    playerScore = calculateScore(playerCard);
+    computerScore = calculateScore(computerCard);
     gameState = "checkForBlackjack";
-    showCards(playerCard, computerCard);
+    console.log(showCards(playerCard, computerCard));
   }
   console.log(playerCard[0].rank);
   console.log(playerCard[1].rank);
-  console.log(computerCard[0].rank);
-  console.log(computerCard[1].rank);
   console.log(playerScore);
-  console.log(computerScore);
   //check for any Blackjacks (immediate win unless draw)
   if ((gameState = "checkForBlackjack")) {
     if (playerScore == 21 && computerScore == 21) {
       gameState = "playerDraws";
       return (
         playerAndDealerHands +
-        `Both you and the dealer got a blackjack! <br><br><b>It's a draw! 🤔</b>`
+        `<br><br>Both you and the dealer got a blackjack! <br><br><b>It's a draw! 🤔</b>`
       );
     } else if (playerScore == 21) {
       gameState = "playerWins";
       return (
         playerAndDealerHands +
-        `You got a blackjack!<br><br> <b>You win! 🎉🎉</b>`
+        `<br><br>You got a blackjack!<br><br> <b>You win! 🎉🎉</b>`
       );
     } else if (computerScore == 21) {
       gameState = "playerLoses";
       return (
         playerAndDealerHands +
-        `The dealer got a blackjack! <br><br> <b>You lose! 💸</b>`
+        `<br><br>The dealer got a blackjack! <br><br><br> <b>You lose! 💸</b>`
       );
     } else {
       gameState = "hitOrStand";
       dealButton.style.display = "none";
     }
+    console.log(gameState);
   }
   if ((gameState = "hitOrStand")) {
     hitButton.addEventListener("click", function () {
       playerCard.push(shuffledDeck.pop());
-      var playerScore = calculateScore(playerCard);
+      playerScore = calculateScore(playerCard);
+      gameState = "hitOrStand";
       console.log(playerCard[2]);
       console.log(playerScore);
+      console.log(gameState);
     });
     standButton.addEventListener("click", function () {
-      gameState = "compareAfterStanding";
       dealButton.style.display = "inline";
-      dealButton.style.display = "none";
-      dealButton.style.display = "none";
+      hitButton.style.display = "none";
+      standButton.style.display = "none";
+      gameState = "compareAfterStanding";
     });
   }
-
-  gameState = "compareAfterStanding";
+  console.log(gameState);
   if ((gameState = "compareAfterStanding")) {
     if (playerScore > computerScore) {
       gameState = "playerWins";
@@ -139,14 +143,22 @@ function random(size) {
   return Math.floor(Math.random() * size);
 }
 
-function showCards() {
+function showCards(playerCard, computerCard) {
   playerAndDealerHands = `You drew:`;
-  for (i = 0; i < Object.keys(this.playerCard).length; i += 1) {
-    playerAndDealerHands += `<br>${this.playerCard[i].rank} ${this.playerCard[i].suit}`;
+  console.log(playerCard);
+  console.log(typeof playerCard);
+  console.log(Object.keys(playerCard).length);
+  var playerSize = playerCard.length;
+  var computerSize = computerCard.length;
+  console.log(playerSize);
+  console.log(computerSize);
+  for (i = 0; i < playerSize; i += 1) {
+    playerAndDealerHands += `<br>${playerCard[i].rank} ${playerCard[i].suit}`;
+    console.log(playerAndDealerHands);
   }
   playerAndDealerHands += `<br><br>The Dealer drew:`;
-  for (j = 0; j < Object.keys(this.computerCard).length; j += 1) {
-    playerAndDealerHands += `<br>${this.computerCard[j].rank} ${this.computerCard[j].suit}`;
+  for (j = 0; j < computerSize; j += 1) {
+    playerAndDealerHands += `<br>${computerCard[j].rank} ${computerCard[j].suit}`;
   }
   return playerAndDealerHands;
 }
