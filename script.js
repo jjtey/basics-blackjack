@@ -5,13 +5,21 @@ let hitButton = document.getElementById("submit-buttonHit");
 let standButton = document.getElementById("submit-buttonStand");
 var playerScore = "";
 var computerScore = "";
+var cardDeck = [];
+var shuffledDeck = [];
+var gameState = "";
+var winner = "";
+var suits = ["♦️", "♣️", "♥️", "♠️"];
+dealButton.style.display = "inline";
+hitButton.style.display = "none";
+standButton.style.display = "none";
 
 var main = function (input) {
-  var cardDeck = makeDeck();
-  var shuffledDeck = shufflecardDeck(cardDeck);
-  var gameState = "drawCards";
+  cardDeck = makeDeck();
+  shuffledDeck = shufflecardDeck(cardDeck);
+  gameState = "drawCards";
   //if game state = xx, deal the cards -> which is each player/dealer draws 2 cards
-  if ((gameState = "drawCards")) {
+  if (!playerScore) {
     dealButton.style.display = "none";
     hitButton.style.display = "inline";
     standButton.style.display = "inline";
@@ -22,7 +30,7 @@ var main = function (input) {
     playerScore = calculateScore(playerCard);
     computerScore = calculateScore(computerCard);
     gameState = "checkForBlackjack";
-    console.log(showCards(playerCard, computerCard));
+    return showCards(playerCard, computerCard);
   }
   console.log(playerCard[0].rank);
   console.log(playerCard[1].rank);
@@ -53,42 +61,13 @@ var main = function (input) {
     }
     console.log(gameState);
   }
-  if ((gameState = "hitOrStand")) {
-    hitButton.addEventListener("click", function () {
-      playerCard.push(shuffledDeck.pop());
-      playerScore = calculateScore(playerCard);
-      gameState = "hitOrStand";
-      console.log(playerCard[2]);
-      console.log(playerScore);
-      console.log(gameState);
-    });
-    standButton.addEventListener("click", function () {
-      dealButton.style.display = "inline";
-      hitButton.style.display = "none";
-      standButton.style.display = "none";
-      gameState = "compareAfterStanding";
-    });
-  }
   console.log(gameState);
-  if ((gameState = "compareAfterStanding")) {
-    if (playerScore > computerScore) {
-      gameState = "playerWins";
-      return (
-        showCards(playerCard, computerCard) +
-        `<br><br> <b>Your hand wins the dealer's! 🎉🎉 </b>`
-      );
-    } else if (playerScore == computerScore) {
-      gameState = "playerDraws";
-      return (
-        showCards(playerCard, computerCard) +
-        `<br><br> <b>You are tied with the dealer! 🤔</b>`
-      );
-    } else {
-      gameState = "playerLoses";
-      return (
-        showCards(playerCard, computerCard) + `<br><br> <b>You lose! 💸</b>`
-      );
-    }
+  if ((gameState = "compareAfterStanding") && !winner) {
+    console.log(gameState);
+    console.log(winner);
+    return decideWinner(playerScore, computerScore);
+  } else {
+    return showCards(playerCard, computerCard);
   }
 };
 //if no Blackjacks, player is prompted to 'hit' or 'stand'
@@ -97,29 +76,31 @@ var main = function (input) {
 //when both 'stand', reveal cards and decide winner.;
 
 function makeDeck() {
-  var cardDeck = []; //create 4 suits
-  var suits = ["♦️", "♣️", "♥️", "♠️"];
+  cardDeck = new Array();
   for (suitsIndex = 0; suitsIndex < suits.length; suitsIndex += 1) {
-    var currentSuit = suits[suitsIndex];
     //loop through each suit & within each suit, loop through each rank
     //for ranks == 1, 11, 12, 13 -> allocate different name from their rank
     for (var currentRank = 1; currentRank <= 13; currentRank += 1) {
       var currentName = currentRank;
       var currentValue = currentRank;
       if (currentRank == 1) {
-        currentName = "ace";
+        currentName = "Ace";
         currentValue = 11;
       } else if (currentRank == 11) {
-        currentName = "jack";
+        currentName = "Jack";
         currentValue = 10;
       } else if (currentRank == 12) {
-        currentName = "queen";
+        currentName = "Queen";
         currentValue = 10;
       } else if (currentRank == 13) {
-        currentName = "king";
+        currentName = "King";
         currentValue = 10;
       }
-      var card = { rank: currentValue, suit: currentSuit, name: currentName };
+      var card = {
+        rank: currentValue,
+        suit: suits[suitsIndex],
+        name: currentName,
+      };
       cardDeck.push(card);
     }
   }
@@ -153,12 +134,12 @@ function showCards(playerCard, computerCard) {
   console.log(playerSize);
   console.log(computerSize);
   for (i = 0; i < playerSize; i += 1) {
-    playerAndDealerHands += `<br>${playerCard[i].rank} ${playerCard[i].suit}`;
+    playerAndDealerHands += `<br>${playerCard[i].name} ${playerCard[i].suit}`;
     console.log(playerAndDealerHands);
   }
   playerAndDealerHands += `<br><br>The Dealer drew:`;
   for (j = 0; j < computerSize; j += 1) {
-    playerAndDealerHands += `<br>${computerCard[j].rank} ${computerCard[j].suit}`;
+    playerAndDealerHands += `<br>${computerCard[j].name} ${computerCard[j].suit}`;
   }
   return playerAndDealerHands;
 }
@@ -168,4 +149,52 @@ function calculateScore(playerCard) {
     return previous + playerCard[key].rank;
   }, 0);
   return playerScore;
+}
+
+function decideWinner(playerScore, computerScore) {
+  if (
+    (playerScore > computerScore && playerScore <= 21) ||
+    (computerCard > 21 && playerScore <= 21)
+  ) {
+    gameState = "playerWins";
+    winner =
+      showCards(playerCard, computerCard) +
+      `<br><br> <b>Your hand wins the dealer's! 🎉🎉 </b>`;
+  } else if (
+    playerScore == computerScore ||
+    (playerScore > 21 && computerScore > 21)
+  ) {
+    gameState = "playerDraws";
+    winner =
+      showCards(playerCard, computerCard) +
+      `<br><br> <b>You are tied with the dealer! 🤔</b>`;
+  } else if (
+    playerScore > 21 ||
+    (computerScore > playerScore && computerScore <= 21)
+  ) {
+    gameState = "playerLoses";
+    winner =
+      showCards(playerCard, computerCard) + `<br><br> <b>You lose! 💸</b>`;
+  }
+}
+
+function playerHit(playerCard, shuffledDeck) {
+  playerCard.push(shuffledDeck.pop());
+  playerScore = calculateScore(playerCard);
+  if (playerScore > 21) {
+    return `You busted! Press "Stand" to see if the Dealer busted or not! 🤞`;
+  }
+  return showCards(playerCard, computerCard);
+}
+
+function playerStand() {
+  dealButton.style.display = "inline";
+  hitButton.style.display = "none";
+  standButton.style.display = "none";
+  gameState = "compareAfterStanding";
+  if (computerCard < 18) {
+    computerCard.push(shuffledDeck.pop());
+    computerScore = calculateScore(computerCard);
+  }
+  return decideWinner(playerScore, computerScore);
 }

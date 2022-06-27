@@ -121,14 +121,6 @@
         padding: 38px 31px;
       }
 
-      input {
-        font-size: 21px;
-        line-height: 33px;
-        margin: 0 0 23px 0;
-        padding: 0 9px;
-        width: 100%;
-      }
-
       button {
         font-size: 21px;
         line-height: 33px;
@@ -172,9 +164,6 @@
     </h1>
     <h1 class="header">♣️ Basics - Blackjack ♠️</h1>
     <div id="container">
-      <p>Input:</p>
-      <input id="input-field" />
-      <br />
       <button id="submit-button">Deal</button>
       <button id="submit-buttonHit">Hit</button>
       <button id="submit-buttonStand">Stand</button>
@@ -185,18 +174,21 @@
     <script src="script.js"></script>
     <!-- Define button click functionality -->
     <script>
-      var button = document.querySelector("#submit-button");
-      button.addEventListener("click", function () {
-        // Set result to input value
-        var input = document.querySelector("#input-field");
-        var result = main(input.value);
-
-        // Display result in output element
+      var dealbutton = document.querySelector("#submit-button");
+      dealbutton.addEventListener("click", function () {
+        var result = main();
         var output = document.querySelector("#output-div");
         output.innerHTML = result;
-
-        // Reset input value
-        input.value = "";
+      });
+      hitButton.addEventListener("click", function () {
+        var result = playerHit(playerCard, shuffledDeck);
+        var output = document.querySelector("#output-div");
+        output.innerHTML = result;
+      });
+      standButton.addEventListener("click", function () {
+        var result = playerStand();
+        var output = document.querySelector("#output-div");
+        output.innerHTML = result;
       });
     </script>
   </body>
