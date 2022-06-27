@@ -222,5 +222,5 @@ function resetGame() {
   resetButton.style.display = "none";
   playerCard = [];
   computerCard = [];
-  return "";
+  return `Welcome to Blackjack! Click the <b>\"Deal\"</b> button to get started!`;
 }
