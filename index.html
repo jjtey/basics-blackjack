@@ -167,6 +167,7 @@
       <button id="submit-button">Deal</button>
       <button id="submit-buttonHit">Hit</button>
       <button id="submit-buttonStand">Stand</button>
+      <button id="submit-buttonReset">Reset</button>
       <p>Output:</p>
       <div id="output-div"></div>
     </div>
@@ -186,7 +187,17 @@
         output.innerHTML = result;
       });
       standButton.addEventListener("click", function () {
-        var result = playerStand();
+        var result = playerStand(
+          computerCard,
+          shuffledDeck,
+          computerScore,
+          playerScore
+        );
+        var output = document.querySelector("#output-div");
+        output.innerHTML = result;
+      });
+      resetButton.addEventListener("click", function () {
+        var result = resetGame();
         var output = document.querySelector("#output-div");
         output.innerHTML = result;
       });
