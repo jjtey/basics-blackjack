@@ -178,7 +178,7 @@ function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
   return decideWinner(playerScore, this.computerScoreFinal);
 }
 
-function decideWinner(playerScore, computerScore, playerCard, computerCard) {
+function decideWinner(playerScore, computerScore) {
   if (
     (playerScore > computerScore && playerScore <= 21) ||
     (computerScore > 21 && playerScore <= 21)
