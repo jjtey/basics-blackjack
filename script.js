@@ -31,7 +31,7 @@ var main = function () {
     resetButton.style.display = "inline";
     return checkBlackjack(playerScore, computerScore);
   }
-  return showCards(playerCard, computerCard);
+  return showCards(playerCard, computerCard, playerScore, computerScore);
 };
 //if no Blackjacks, player is prompted to 'hit' or 'stand'
 //player can keep 'hitting' until ready or 'stand' or if hand exceeds 21, immediately show both player/dealer hands -> can only draw or lose
@@ -104,19 +104,19 @@ function checkBlackjack(playerScore, computerScore) {
   if (playerScore == 21 && computerScore == 21) {
     gameState = "playerDraws";
     return (
-      showCards(playerCard, computerCard) +
+      showCards(playerCard, computerCard, playerScore, computerScore) +
       `<br><br>Both you and the dealer got a blackjack! <br><br><b>It's a draw! 🤔</b>`
     );
   } else if (playerScore == 21) {
     gameState = "playerWins";
     return (
-      showCards(playerCard, computerCard) +
+      showCards(playerCard, computerCard, playerScore, computerScore) +
       `<br><br>You got a blackjack!<br><br> <b>You win! 🎉🎉</b>`
     );
   } else if (computerScore == 21) {
     gameState = "playerLoses";
     return (
-      showCards(playerCard, computerCard) +
+      showCards(playerCard, computerCard, playerScore, computerScore) +
       `<br><br>The dealer got a blackjack! <br><br><br> <b>You lose! 💸</b>`
     );
   } else {
@@ -125,7 +125,8 @@ function checkBlackjack(playerScore, computerScore) {
   }
 }
 
-function showCards(playerCard, computerCard) {
+function showCards(playerCard, computerCard, playerScore, computerScore) {
+  console.log(playerCard, computerCard);
   playerAndDealerHands = `You drew:`;
   var playerSize = playerCard.length;
   var computerSize = computerCard.length;
@@ -155,7 +156,7 @@ function playerHit(playerCard, shuffledDeck) {
     hitButton.style.display = "none";
     return `You busted! Press "Stand" to see if the Dealer busted or not! 🤞`;
   }
-  return showCards(playerCard, computerCard);
+  return showCards(playerCard, computerCard, playerScore, computerScore);
 }
 
 function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
@@ -173,7 +174,9 @@ function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
   console.log(computerScoreFinal);
 
   console.log(computerCardFinal);
-  console.log(showCards(playerCard, this.computerCardFinal));
+  console.log(
+    showCards(playerCard, this.computerCardFinal, playerScore, computerScore)
+  );
   console.log(decideWinner(playerScore, this.computerScoreFinal));
   return decideWinner(playerScore, this.computerScoreFinal);
 }
@@ -187,7 +190,7 @@ function decideWinner(playerScore, computerScore) {
     console.log(computerScore);
     gameState = "playerWins";
     return (winner =
-      showCards(playerCard, computerCard) +
+      showCards(playerCard, computerCard, playerScore, computerScore) +
       `<br><br> <b>Your hand wins the dealer's! 🎉🎉 </b>`);
   } else if (
     playerScore == computerScore ||
@@ -197,7 +200,7 @@ function decideWinner(playerScore, computerScore) {
     console.log(computerScore);
     gameState = "playerDraws";
     return (winner =
-      showCards(playerCard, computerCard) +
+      showCards(playerCard, computerCard, playerScore, computerScore) +
       `<br><br> <b>You are tied with the dealer! 🤔</b>`);
   } else if (
     (playerScore > 21 && computerScore <= 21) ||
@@ -207,7 +210,8 @@ function decideWinner(playerScore, computerScore) {
     console.log(computerScore);
     gameState = "playerLoses";
     return (winner =
-      showCards(playerCard, computerCard) + `<br><br> <b>You lose! 💸</b>`);
+      showCards(playerCard, computerCard, playerScore, computerScore) +
+      `<br><br> <b>You lose! 💸</b>`);
   }
 }
 
@@ -218,4 +222,5 @@ function resetGame() {
   resetButton.style.display = "none";
   playerCard = [];
   computerCard = [];
+  return "";
 }
