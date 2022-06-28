@@ -146,6 +146,20 @@ function calculateScore(playerCard) {
   var playerScore = Object.keys(playerCard).reduce(function (previous, key) {
     return previous + playerCard[key].rank;
   }, 0);
+  var noOfAces = Object.keys(playerCard).reduce(function (n, key) {
+    return n + (playerCard[key].rank === 11);
+  }, 0);
+  console.log(noOfAces);
+  if (noOfAces == 2 && playerCard.length == 2) {
+    playerScore = 21;
+  }
+  while (playerScore > 21 && noOfAces > 0) {
+    playerScore -= 10;
+    if (playerScore <= 21) {
+      break;
+    }
+    noOfAces -= 1;
+  }
   return playerScore;
 }
 
@@ -191,7 +205,7 @@ function decideWinner(playerScore, computerScore) {
     gameState = "playerWins";
     return (winner =
       showCards(playerCard, computerCard, playerScore, computerScore) +
-      `<br><br> <b>Your hand wins the dealer's! 🎉🎉 </b>`);
+      `<br><br> <b>You win! 🎉🎉 </b>`);
   } else if (
     playerScore == computerScore ||
     (playerScore > 21 && computerScore > 21)
