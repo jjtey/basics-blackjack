@@ -31,7 +31,7 @@ var main = function () {
     resetButton.style.display = "inline";
     return checkBlackjack(playerScore, computerScore);
   }
-  return showCards(playerCard, computerCard, playerScore, computerScore);
+  return showCardsBeforeStand(playerCard, computerCard, playerScore);
 };
 
 function makeDeck() {
@@ -123,6 +123,22 @@ function checkBlackjack(playerScore, computerScore) {
   }
 }
 
+function showCardsBeforeStand(playerCard, computerCard, playerScore) {
+  //function displays what is in each player/dealer's hand
+  playerAndDealerHands = `You drew:`;
+  var playerSize = playerCard.length;
+  var computerSize = computerCard.length;
+  for (i = 0; i < playerSize; i += 1) {
+    playerAndDealerHands += `<br>${playerCard[i].name} ${playerCard[i].suit}`;
+  }
+  playerAndDealerHands += `<br>You have <u>${playerScore}</u> points!<br><br>The Dealer drew: <br>A hidden card 🃏`;
+  for (j = 1; j < computerSize; j += 1) {
+    playerAndDealerHands += `<br>${computerCard[j].name} ${computerCard[j].suit}`;
+  }
+  playerAndDealerHands += `<br>The Dealer has <u>???</u> points!`;
+  return playerAndDealerHands;
+}
+
 function showCards(playerCard, computerCard, playerScore, computerScore) {
   //function displays what is in each player/dealer's hand
   playerAndDealerHands = `You drew:`;
@@ -168,7 +184,7 @@ function playerHit(playerCard, shuffledDeck) {
     hitButton.style.display = "none";
     return `You've busted! Press <b>"Stand"</b> to see if the Dealer busted or not! 🤞`;
   }
-  return showCards(playerCard, computerCard, playerScore, computerScore);
+  return showCardsBeforeStand(playerCard, computerCard, playerScore);
 }
 
 function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
