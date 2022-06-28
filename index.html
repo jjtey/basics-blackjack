@@ -119,6 +119,7 @@
         margin: 40px auto;
         max-width: 800px;
         padding: 38px 31px;
+        text-align: center;
       }
 
       button {
@@ -126,6 +127,7 @@
         line-height: 33px;
         margin: 0 0 23px 0;
         padding: 0 6px;
+        display: inline-block;
       }
 
       #output-div {
@@ -133,8 +135,11 @@
         margin: 20px auto;
         padding: 20px;
         width: 100%;
+        text-align: left;
       }
-
+      #input-div {
+        text-align: center;
+      }
       .logo-img {
         height: 49px;
         position: relative;
@@ -163,6 +168,12 @@
       />
     </h1>
     <h1 class="header">♣️ Basics - Blackjack ♠️</h1>
+    <div id="input-div">
+      Your objective is to collect cards that total more points than the Dealer,
+      without going over 21!<br />
+      <b>"Hit"</b> refers to adding a card to your own hand.<br />
+      <b>"Stand"</b> refers to ending your turn without taking a card.
+    </div>
     <div id="container">
       <button id="submit-button">Deal</button>
       <button id="submit-buttonHit">Hit</button>

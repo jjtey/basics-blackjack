@@ -33,10 +33,6 @@ var main = function () {
   }
   return showCards(playerCard, computerCard, playerScore, computerScore);
 };
-//if no Blackjacks, player is prompted to 'hit' or 'stand'
-//player can keep 'hitting' until ready or 'stand' or if hand exceeds 21, immediately show both player/dealer hands -> can only draw or lose
-//computer will automatically 'hit' or 'stand' -> logic could be computer only 'stands' when hands is 18 and above
-//when both 'stand', reveal cards and decide winner.;
 
 function makeDeck() {
   cardDeck = new Array();
@@ -88,6 +84,7 @@ function random(size) {
 }
 
 function dealCards(shuffledDeck, playerCard, computerCard) {
+  //assigns 2 cards to player/dealer and scores them
   dealButton.style.display = "none";
   hitButton.style.display = "inline";
   standButton.style.display = "inline";
@@ -101,6 +98,7 @@ function dealCards(shuffledDeck, playerCard, computerCard) {
 }
 
 function checkBlackjack(playerScore, computerScore) {
+  //added immediate win condition
   if (playerScore == 21 && computerScore == 21) {
     gameState = "playerDraws";
     return (
@@ -126,13 +124,12 @@ function checkBlackjack(playerScore, computerScore) {
 }
 
 function showCards(playerCard, computerCard, playerScore, computerScore) {
-  console.log(playerCard, computerCard);
+  //function displays what is in each player/dealer's hand
   playerAndDealerHands = `You drew:`;
   var playerSize = playerCard.length;
   var computerSize = computerCard.length;
   for (i = 0; i < playerSize; i += 1) {
     playerAndDealerHands += `<br>${playerCard[i].name} ${playerCard[i].suit}`;
-    console.log(playerAndDealerHands);
   }
   playerAndDealerHands += `<br>You have <u>${playerScore}</u> points!<br><br>The Dealer drew:`;
   for (j = 0; j < computerSize; j += 1) {
@@ -143,13 +140,13 @@ function showCards(playerCard, computerCard, playerScore, computerScore) {
 }
 
 function calculateScore(playerCard) {
+  //scores player/dealer's card, with logic for assigning score to "Ace"
   var playerScore = Object.keys(playerCard).reduce(function (previous, key) {
     return previous + playerCard[key].rank;
   }, 0);
   var noOfAces = Object.keys(playerCard).reduce(function (n, key) {
     return n + (playerCard[key].rank === 11);
   }, 0);
-  console.log(noOfAces);
   if (noOfAces == 2 && playerCard.length == 2) {
     playerScore = 21;
   }
@@ -164,16 +161,18 @@ function calculateScore(playerCard) {
 }
 
 function playerHit(playerCard, shuffledDeck) {
+  //adds card to player (when hit button is pressed)
   playerCard.push(shuffledDeck.pop());
   playerScore = calculateScore(playerCard);
   if (playerScore > 21) {
     hitButton.style.display = "none";
-    return `You busted! Press "Stand" to see if the Dealer busted or not! 🤞`;
+    return `You've busted! Press <b>"Stand"</b> to see if the Dealer busted or not! 🤞`;
   }
   return showCards(playerCard, computerCard, playerScore, computerScore);
 }
 
 function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
+  //compares player/dealer scores when game is resolved (when stand button is pressed)
   dealButton.style.display = "none";
   hitButton.style.display = "none";
   standButton.style.display = "none";
@@ -184,24 +183,15 @@ function playerStand(computerCard, shuffledDeck, computerScore, playerScore) {
   }
   computerScoreFinal = computerScore;
   computerCardFinal = computerCard;
-
-  console.log(computerScoreFinal);
-
-  console.log(computerCardFinal);
-  console.log(
-    showCards(playerCard, this.computerCardFinal, playerScore, computerScore)
-  );
-  console.log(decideWinner(playerScore, this.computerScoreFinal));
   return decideWinner(playerScore, this.computerScoreFinal);
 }
 
 function decideWinner(playerScore, computerScore) {
+  //winning conditions for player/dealer
   if (
     (playerScore > computerScore && playerScore <= 21) ||
     (computerScore > 21 && playerScore <= 21)
   ) {
-    console.log(playerScore);
-    console.log(computerScore);
     gameState = "playerWins";
     return (winner =
       showCards(playerCard, computerCard, playerScore, computerScore) +
@@ -210,8 +200,6 @@ function decideWinner(playerScore, computerScore) {
     playerScore == computerScore ||
     (playerScore > 21 && computerScore > 21)
   ) {
-    console.log(playerScore);
-    console.log(computerScore);
     gameState = "playerDraws";
     return (winner =
       showCards(playerCard, computerCard, playerScore, computerScore) +
@@ -220,8 +208,6 @@ function decideWinner(playerScore, computerScore) {
     (playerScore > 21 && computerScore <= 21) ||
     (computerScore > playerScore && computerScore <= 21)
   ) {
-    console.log(playerScore);
-    console.log(computerScore);
     gameState = "playerLoses";
     return (winner =
       showCards(playerCard, computerCard, playerScore, computerScore) +
