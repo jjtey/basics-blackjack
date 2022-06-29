@@ -95,9 +95,10 @@
         font-family: "Roboto Condensed", sans-serif;
         margin-left: 30px;
         margin-right: 30px;
-        background-color: white;
-        color: black; /* sets the font color */
-        background-image: url(""); /* The image used */
+
+        color: white; /* sets the font color */
+        text-shadow: 2px 2px 5px grey;
+        background-image: url("https://img.freepik.com/free-vector/neon-symbols-casino-playing-cards-background_1017-23680.jpg?t=st=1656523681~exp=1656524281~hmac=9d586b781294dc1ff184f113f67fc8189be04ab2c3bf028438fe001563a78ab6&w=1060"); /* The image used */
         background-position: center; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */
         background-size: cover; /* Resize the background image to cover the entire container */
@@ -115,21 +116,70 @@
       }
 
       #container {
-        background-color: pink;
-        margin: 40px auto;
+        background-color: rgba(0, 0, 0, 0);
+        margin: 20px auto;
         max-width: 800px;
-        padding: 38px 31px;
+        padding: 30px 31px;
         text-align: center;
+        border-radius: 15px;
       }
 
       button {
-        font-size: 21px;
-        line-height: 33px;
-        margin: 0 0 23px 0;
-        padding: 0 6px;
+        background-color: #4caf50; /* Green */
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        text-align: center;
+        text-decoration: none;
         display: inline-block;
+        font-size: 21px;
+        margin: 2px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
       }
 
+      .button1 {
+        background-color: white;
+        color: black;
+        border: 2px solid #4caf50;
+      }
+
+      .button1:hover {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .button2 {
+        background-color: white;
+        color: black;
+        border: 2px solid #008cba;
+      }
+
+      .button2:hover {
+        background-color: #008cba;
+        color: white;
+      }
+
+      .button3 {
+        background-color: white;
+        color: black;
+        border: 2px solid #f44336;
+      }
+
+      .button3:hover {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .button4 {
+        background-color: white;
+        color: black;
+        border: 2px solid #e7e7e7;
+      }
+
+      .button4:hover {
+        background-color: #e7e7e7;
+      }
       #output-div {
         background-color: lightgrey;
         margin: 20px auto;
@@ -171,14 +221,14 @@
     <div id="input-div">
       Your objective is to collect cards that total more points than the Dealer,
       without going over 21!<br />
-      <b>"Hit"</b> refers to adding a card to your own hand.<br />
-      <b>"Stand"</b> refers to ending your turn without taking a card.
+      <b>"Hit"</b> adds a card to your own hand.<br />
+      <b>"Stand"</b> ends your turn without taking a card.
     </div>
     <div id="container">
-      <button id="submit-button">Deal</button>
-      <button id="submit-buttonHit">Hit</button>
-      <button id="submit-buttonStand">Stand</button>
-      <button id="submit-buttonReset">Reset</button>
+      <button class="button1" id="submit-button">Deal</button>
+      <button class="button2" id="submit-buttonHit">Hit</button>
+      <button class="button3" id="submit-buttonStand">Stand</button>
+      <button class="button4" id="submit-buttonReset">Reset</button>
       <p></p>
       <div id="output-div">
         Welcome to Blackjack! Click the <b>"Deal"</b> button to get started!
