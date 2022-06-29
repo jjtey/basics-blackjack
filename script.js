@@ -131,11 +131,11 @@ function showCardsBeforeStand(playerCard, computerCard, playerScore) {
   for (i = 0; i < playerSize; i += 1) {
     playerAndDealerHands += `<br>${playerCard[i].name} ${playerCard[i].suit}`;
   }
-  playerAndDealerHands += `<br>You have <u>${playerScore}</u> points!<br><br>The Dealer drew: <br>A hidden card 🃏`;
+  playerAndDealerHands += `<br><u>You have ${playerScore} points!</u><br><br>The Dealer drew: <br>A hidden card 🃏`;
   for (j = 1; j < computerSize; j += 1) {
     playerAndDealerHands += `<br>${computerCard[j].name} ${computerCard[j].suit}`;
   }
-  playerAndDealerHands += `<br>The Dealer has <u>???</u> points!`;
+  playerAndDealerHands += `<br><u>The Dealer has ??? points!</u>`;
   return playerAndDealerHands;
 }
 
@@ -147,11 +147,11 @@ function showCards(playerCard, computerCard, playerScore, computerScore) {
   for (i = 0; i < playerSize; i += 1) {
     playerAndDealerHands += `<br>${playerCard[i].name} ${playerCard[i].suit}`;
   }
-  playerAndDealerHands += `<br>You have <u>${playerScore}</u> points!<br><br>The Dealer drew:`;
+  playerAndDealerHands += `<br><u>You have ${playerScore} points!</u><br><br>The Dealer drew:`;
   for (j = 0; j < computerSize; j += 1) {
     playerAndDealerHands += `<br>${computerCard[j].name} ${computerCard[j].suit}`;
   }
-  playerAndDealerHands += `<br>The Dealer has <u>${computerScore}</u> points!`;
+  playerAndDealerHands += `<br><u>The Dealer has ${computerScore} points!</u>`;
   return playerAndDealerHands;
 }
 
